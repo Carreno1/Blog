@@ -1,0 +1,99 @@
+﻿@model Portfolio_Blog.Models.ExternalLoginListViewModel
+@using Microsoft.Owin.Security
+
+<h4>Use another service to log in.</h4>
+<hr />
+@{
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    if (loginProviders.Count() == 0) {
+        <div>
+            <p>
+                There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support logging in via external services.
+            </p>
+        </div>
+    }
+    else {
+        using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl })) {
+            @Html.AntiForgeryToken()
+            <div id="socialLoginList">
+                <p>
+                    @foreach (AuthenticationDescription p in loginProviders)
+                    {
+
+                    }
+                    <div class="fb-login-button" data-size="large" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-width=""></div>
+                   
+                </p>
+            </div>
+        }
+    }
+}
+<html>
+<head>
+    <meta name="google-signin-client_id" content="941128327168-jn9570uhh57eg9red7bs4smjaq8ooljq.apps.googleusercontent.com">
+</head>
+<body>
+    <div id="my-signin2"></div>
+    <script>
+        function onSuccess(googleUser) {
+            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+        }
+        function onFailure(error) {
+            console.log(error);
+        }
+        function renderButton() {
+            gapi.signin2.render('my-signin2', {
+                'scope': 'profile email',
+                'width': 240,
+                'height': 50,
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': onSuccess,
+                'onfailure': onFailure
+            });
+        }
+    </script>
+  
+    <header>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
+    </header>
+
+        <br />
+
+        <a id="twitter-button" class="btn btn-social btn-twitter">
+            <i class="fa fa-twitter"></i> Sign in with Twitter
+        </a>
+
+        <script>
+            $('#twitter-button').on('click', function () {
+                // Initialize with your OAuth.io app public key
+                OAuth.initialize('bNUVu_wRdLaNqjx2B1HToMVZ6TU');
+                // Use popup for OAuth
+                OAuth.popup('twitter').then(twitter => {
+                    console.log('twitter:', twitter);
+                    // Prompts 'welcome' message with User's email on successful login
+                    // #me() is a convenient method to retrieve user data without requiring you
+                    // to know which OAuth provider url to call
+                    twitter.me().then(data => {
+                        console.log('data:', data);
+                        alert('Twitter says your email is:' + data.email + ".\nView browser 'Console Log' for more details");
+                    });
+                    // Retrieves user data from OAuth provider by using #get() and
+                    // OAuth provider url
+                    twitter.get('/1.1/account/verify_credentials.json?include_email=true').then(data => {
+                        console.log('self data:', data);
+                    })
+                });
+            })
+        </script>
+   
+
+
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>
+</html>

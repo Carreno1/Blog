@@ -1,0 +1,109 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Portfolio_Blog.Models.BlogPost>
+
+
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("Index", "BlogPosts", FormMethod.Get, htmlAttributes: new { @class = "form" }))
+{
+    <div class="controls controls-row search-row">
+        <input id="searchStr" name="searchStr" class="input-block-level" type="text"
+               placeholder="Search" />
+        <button id="searchStr" name="searchStr" class="btn btn-dark" type="submit">
+            <i class="icon-search"></i>
+        </button>
+
+
+
+    </div>
+}
+
+
+<br />
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-dark" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Created")
+        </th>
+        <th>
+            @Html.DisplayName("Updated")
+        </th>
+        <th>
+            @Html.DisplayName("Title")
+        </th>
+        <th>
+            @Html.DisplayName("Slug")
+        </th>
+        <th>
+            @Html.DisplayName("Abstract")
+        </th>
+        <th>
+            @Html.DisplayName("Body")
+        </th>
+        <th>
+            @Html.DisplayName("Image")
+        </th>
+        <th>
+            @Html.DisplayName("IsPublished")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Updated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slug)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Abstract)*@
+                @Html.ActionLink(item.Abstract, "Details", "BlogPosts", new { Slug = item.Slug }, null)
+            </td>
+            <td>
+                @Html.Raw(item.Body)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.MediaUrl)*@
+                @if (item.MediaUrl != null)
+                {
+                    <img class="img-responsive" src"@item.MediaURL" alt="" />
+                }
+                @*we could have something else here such as: @item.MediaURL.ToString();*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPublished)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
+                @Html.ActionLink("Details", "Details", new { slug = item.Slug }) 
+
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchStr = ViewBag.Search }));

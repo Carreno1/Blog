@@ -1,0 +1,190 @@
+﻿@using Portfolio_Blog.Models
+@model  BlogPost
+
+
+<div class="container">
+    <div class="row">
+        <!-- Latest Posts -->
+        <main class="post blog-post col-lg-8">
+            <div class="container">
+                <div class="post-single">
+
+                    @*<div class="post-thumbnail"><img src="~/img/blog-post-3.jpeg" alt="..." class="img-fluid"></div>*@
+                    @if(Model.MediaUrl != null){<img class ="img-responsive" src="@Model.MediaUrl" alt="">
+                        }
+                        <div class="post-details">
+                            <div class="post-meta d-flex justify-content-between">
+                                <div class="category"><a href="#">Business</a><a href="#">Financial</a></div>
+                            </div>
+                            <h1>@Model.Title<a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
+                            <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+                                <a href="#" class="author d-flex align-items-center flex-wrap">
+                                    <div class="avatar"><img src="/img/avatar-1.jpg" alt="..." class="img-fluid"></div>
+                                    <div class="title"><span>Michael Carreno</span></div>
+                                </a>
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="date"><i class="icon-clock"></i>@Model.Created.ToString("MMM dd, yyyy")</div>
+                                    <div class="comments meta-last"><i class="icon-comment"></i>12</div>
+                                </div>
+                            </div>
+                            <div class="post-body" id="Body">
+                                
+                                @Html.Raw(Model.Body)
+
+                            </div>
+                            
+                            <div class="post-comments">
+                                <header>
+                                    <h3 class="h6">Post Comments<span class="no-of-comments">(@Model.Comments.Count())</span></h3>
+                                </header>
+
+
+                                @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created).ToList())
+                                {
+
+                                    <div class="comment">
+                                        <div class="comment-header d-flex justify-content-between">
+                                            <div class="user d-flex align-items-center">
+                                                <div class="image"><img src="/img/user.svg" alt="..." class="img-fluid rounded-circle"></div>
+                                                <div class="title"><strong>@comment.Author.LastName, @comment.Author.FirstName</strong><span class="date">@comment.Created.ToString("MMM dd, yyyy")</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="comment-body">
+                                            <p>@comment.Body</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+
+
+                            <div class="add-comment">
+                                <header>
+                                    <h3 class="h6">Leave a comment</h3>
+                                </header>
+                                @*<form action="#" class="commenting-form">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <input type="text" name="username" id="username" placeholder="Name" class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="email" name="username" id="useremail" placeholder="Email Address (will not be published)" class="form-control">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <textarea name="usercomment" id="usercomment" placeholder="Type your comment" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <button type="submit" class="btn btn-secondary">Submit Comment</button>
+                            </div>
+                        </div>
+                    </form>*@
+
+                                @if (User.Identity.IsAuthenticated)
+                                {
+
+
+
+                                    using (Html.BeginForm("Create", "Comments", FormMethod.Post, null))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+
+                                        @Html.Hidden("BlogPostId", Model.Id)
+                                        @Html.HiddenFor(model => model.Slug)
+
+                                        @Html.TextArea("CommentBody", new { rows = 10, cols = 70 })
+
+                                        <br />
+
+                                        <button type="submit" class="btn btn-dark">Add</button>
+                                    }
+
+                                }
+
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </main>
+        <aside class="col-lg-4">
+            <!-- Widget [Search Bar Widget]-->
+            @*<div class="widget search">
+                <header>
+                    <h3 class="h6">Search the blog</h3>
+                </header>
+                <form action="#" class="search-form">
+                    <div class="form-group">
+                        <input type="search" placeholder="What are you looking for?">
+                        <button type="submit" class="submit"><i class="icon-search"></i></button>
+                    </div>
+                </form>
+            </div>*@
+            <!-- Widget [Latest Posts Widget]        -->
+            @*<div class="widget latest-posts">
+                <header>
+                    <h3 class="h6">Latest Posts</h3>
+                </header>
+                <div class="blog-posts">
+                    <a href="#">
+                        <div class="item d-flex align-items-center">
+                            <div class="image"><img src="/img/small-thumbnail-1.jpg" alt="..." class="img-fluid"></div>
+                            <div class="title">
+                                <strong>Alberto Savoia Can Teach You About</strong>
+                                <div class="d-flex align-items-center">
+                                    <div class="views"><i class="icon-eye"></i> 500</div>
+                                    <div class="comments"><i class="icon-comment"></i>12</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a><a href="#">
+                        <div class="item d-flex align-items-center">
+                            <div class="image"><img src="/img/small-thumbnail-2.jpg" alt="..." class="img-fluid"></div>
+                            <div class="title">
+                                <strong>Alberto Savoia Can Teach You About</strong>
+                                <div class="d-flex align-items-center">
+                                    <div class="views"><i class="icon-eye"></i> 500</div>
+                                    <div class="comments"><i class="icon-comment"></i>12</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a><a href="#">
+                        <div class="item d-flex align-items-center">
+                            <div class="image"><img src="/img/small-thumbnail-3.jpg" alt="..." class="img-fluid"></div>
+                            <div class="title">
+                                <strong>Alberto Savoia Can Teach You About</strong>
+                                <div class="d-flex align-items-center">
+                                    <div class="views"><i class="icon-eye"></i> 500</div>
+                                    <div class="comments"><i class="icon-comment"></i>12</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>*@
+            <!-- Widget [Categories Widget]-->
+            @*<div class="widget categories">
+                <header>
+                    <h3 class="h6">Categories</h3>
+                </header>
+                <div class="item d-flex justify-content-between"><a href="#">Growth</a><span>12</span></div>
+                <div class="item d-flex justify-content-between"><a href="#">Local</a><span>25</span></div>
+                <div class="item d-flex justify-content-between"><a href="#">Sales</a><span>8</span></div>
+                <div class="item d-flex justify-content-between"><a href="#">Tips</a><span>17</span></div>
+                <div class="item d-flex justify-content-between"><a href="#">Local</a><span>25</span></div>
+            </div>*@
+            <!-- Widget [Tags Cloud Widget]-->
+            @*<div class="widget tags">
+                <header>
+                    <h3 class="h6">Tags</h3>
+                </header>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="#" class="tag">#Business</a></li>
+                    <li class="list-inline-item"><a href="#" class="tag">#Technology</a></li>
+                    <li class="list-inline-item"><a href="#" class="tag">#Fashion</a></li>
+                    <li class="list-inline-item"><a href="#" class="tag">#Sports</a></li>
+                    <li class="list-inline-item"><a href="#" class="tag">#Economy</a></li>
+                </ul>
+            </div>*@
+        </aside>
+    </div>
+</div>
