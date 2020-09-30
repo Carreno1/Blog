@@ -61,7 +61,7 @@
                     <button type="button" data-toggle="collapse" data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span></span><span></span><span></span></button>
                 </div>
                 <!-- Navbar Menu -->
-                <div id="navbarcollapse" class="collapse navbar-collapse">
+                <div id="navbarcollapse" class="collapse navbar-collapse float-left">
                     <ul class="navbar-nav ml-auto">
 
 
@@ -99,15 +99,20 @@
                             @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link active" })
                         </li>
 
-                        @Html.Partial("_LoginPartial")
-
-
 
                     </ul>
 
+
+                    <hr />
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item float-right">
+                            @Html.Partial("_LoginPartial")
+                        </li>
+                    </ul>
                     <hr />
 
                     <div class="navbar-tex">
+
                         <u1 class="navbar-nav m1-auto">
                             <li class="searchbar-container">
                                 @using (Html.BeginForm("Index", "BlogPosts", FormMethod.Get, htmlAttributes: new { @class = "form" }))
@@ -127,8 +132,8 @@
                     </div>
 
                     @*<div class="navbar-text"><a href="#" class="search-btn"><i class="icon-search-1"></i></a></div>
-                            <ul class="langs navbar-text"><a href="#" class="active">EN</a><span>           </span><a href="#">ES</a></ul>
-                        </div>*@
+            <ul class="langs navbar-text"><a href="#" class="active">EN</a><span>           </span><a href="#">ES</a></ul>
+        </div>*@
                 </div>
             </div>
         </nav>
@@ -257,5 +262,19 @@
 
    
     @RenderSection("Scripts", required: false)
+
+    <script>
+        function ellipsify(str) {
+
+            if (str.length > 10) {
+                return (str.substring(0, 10) + "...");
+            }
+            else {
+                return str;
+            }
+        }
+    </script>
+
+
 </body>
 </html>
