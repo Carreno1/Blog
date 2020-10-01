@@ -52,55 +52,60 @@
         <th>
             @Html.DisplayName("Body")
         </th>
+        @if (User.IsInRole("Admin") || User.IsInRole("Moderator")) {
         <th>
             @Html.DisplayName("Image")
         </th>
         <th>
             @Html.DisplayName("IsPublished")
         </th>
+        }
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Slug)
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.Abstract)*@
-                @Html.ActionLink(item.Abstract, "Details", "BlogPosts", new { Slug = item.Slug }, null)
-            </td>
-            <td>
-                @Html.Raw(item.Body)
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.MediaUrl)*@
-                @if (item.MediaUrl != null)
-                {
-                    <img class="img-responsive" src"@item.MediaURL" alt="" />
-                }
-                @*we could have something else here such as: @item.MediaURL.ToString();*@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsPublished)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
-                @Html.ActionLink("Details", "Details", new { slug = item.Slug }) 
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Created)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Updated)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Title)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Slug)
+    </td>
+    <td>
+        @*@Html.DisplayFor(modelItem => item.Abstract)*@
+        @Html.ActionLink(item.Abstract, "Details", "BlogPosts", new { Slug = item.Slug }, null)
+    </td>
+    <td>
+        @Html.Raw(item.Body)
+    </td>
+    @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+    {
+        <td>
+            @*@Html.DisplayFor(modelItem => item.MediaUrl)*@
+            @if (item.MediaUrl != null)
+            {
+                <img class="img-responsive" src"@item.MediaURL" alt="" />
+            }
+            @*we could have something else here such as: @item.MediaURL.ToString();*@
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsPublished)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+            @Html.ActionLink("Details", "Details", new { slug = item.Slug })
 
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>
+    }
+    </tr>
     }
 
 </table>

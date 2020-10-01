@@ -409,6 +409,7 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\Default_Avatar.png" />
     <Content Include="img\icons8-circled-m-50 %282%29.png" />
     <Content Include="img\icons8-circled-m-50.png" />
     <Content Include="img\avatar-1.jpg" />

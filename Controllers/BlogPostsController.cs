@@ -30,6 +30,7 @@ namespace Portfolio_Blog.Controllers
 
         // GET: BlogPosts
         //? after int makes it nullable, ints not nullable by default
+        [AllowAnonymous]
         public ActionResult Index(int? page, string searchStr)
         {
             ViewBag.Search = searchStr;
